@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <unordered_set>
 
 using namespace std;
 
@@ -15,7 +16,9 @@ struct ListNode {
     T item;
     ListNode *next;
 
-    ListNode(T item) : item(item), next(nullptr) {}
+    bool flag;
+
+    ListNode(T item) : item(item), next(nullptr), flag(false) {}
 };
 
 template<class T>
@@ -31,8 +34,18 @@ public:
 
     void AddToTail(T item);
 
+    /// This method is the fastest one because no branch divergence exists
     ListNode<T> *GetMiddleElement() const;
-    ListNode<T> *GetMiddleElement2() const;
+
+    ListNode<T> *GetMiddleElement_WithIf() const;
+
+    void SetHead(ListNode<T> *head);
+
+    bool CheckIfCycleExists_WithSet() const;
+
+    bool CheckIfCycleExists_WithVisited() const;
+
+    bool CheckIfCycleExists_Floyd() const;
 
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
@@ -99,7 +112,7 @@ ListNode<T> *List<T>::GetMiddleElement() const {
 }
 
 template<class T>
-ListNode<T> *List<T>::GetMiddleElement2() const {
+ListNode<T> *List<T>::GetMiddleElement_WithIf() const {
     ListNode<T> *current = head, *mid = head;
 
     if (current == nullptr)
@@ -116,6 +129,57 @@ ListNode<T> *List<T>::GetMiddleElement2() const {
     }
 
     return mid;
+}
+
+template<class T>
+void List<T>::SetHead(ListNode<T> *head) {
+    this->head = head;
+}
+
+template<class T>
+bool List<T>::CheckIfCycleExists_WithSet() const {
+    unordered_set<ListNode<T> *> set;
+    ListNode<T> *current = head;
+
+    while (current != nullptr) {
+        if (set.find(current) != set.end())
+            return true;
+
+        set.insert(current);
+        current = current->next;
+    }
+
+    return false;
+}
+
+template<class T>
+bool List<T>::CheckIfCycleExists_WithVisited() const {
+    ListNode<T> *current = head;
+
+    while (current != nullptr) {
+        if (current->flag)
+            return true;
+
+        current->flag = true;
+        current = current->next;
+    }
+
+    return false;
+}
+
+template<class T>
+bool List<T>::CheckIfCycleExists_Floyd() const {
+    ListNode<T> *slow = head, *fast = head;
+
+    while (slow != nullptr && fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast)
+            return true;
+    }
+
+    return false;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
