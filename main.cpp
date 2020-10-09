@@ -8,48 +8,34 @@ using namespace std;
 int main() {
     List<int> list;
 
-    ListNode<int>* n1 = new ListNode<int>(1);
-    ListNode<int>* n2 = new ListNode<int>(2);
-    ListNode<int>* n3 = new ListNode<int>(3);
-    ListNode<int>* n4 = new ListNode<int>(4);
-    ListNode<int>* n5 = new ListNode<int>(5);
+    list.AddToHead(3);
+    list.AddToHead(2);
+    list.AddToHead(1);
+    list.AddToTail(4);
+    list.AddToTail(5);
+    list.AddToTail(6);
 
-    n1->next = n2;
-    n2->next = n3;
-    n3->next = n4;
-    n4->next = n5;
-    n5->next = n2;
+    cout << "Printing whole list:" << endl;
+    cout << list << endl << endl;
 
-    list.SetHead(n1);
+    list.ReverseList_Recursively(list.GetHead());
 
-    cout << "Existence of cycle in linked list: " << list.CheckIfCycleExists_Floyd() << endl;
+    cout << "Printing whole reversed list:" << endl;
+    cout << list << endl << endl;
 
     auto start = chrono::high_resolution_clock::now();
     for (int i = 0; i < 100000; i++)
-        list.CheckIfCycleExists_WithSet();
+        list.ReverseList_Recursively(list.GetHead());
     auto stop = chrono::high_resolution_clock::now();
 
     cout << "1: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
 
     start = chrono::high_resolution_clock::now();
     for (int i = 0; i < 100000; i++)
-        list.CheckIfCycleExists_WithVisited();
+        list.ReverseList_Iterative();
     stop = chrono::high_resolution_clock::now();
 
     cout << "2: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
 
-    start = chrono::high_resolution_clock::now();
-    for (int i = 0; i < 100000; i++)
-        list.CheckIfCycleExists_Floyd();
-    stop = chrono::high_resolution_clock::now();
-
-    cout << "3: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
-
-    delete n1;
-    delete n2;
-    delete n3;
-    delete n4;
-    delete n5;
-
-    exit(0);
+    return 0;
 }

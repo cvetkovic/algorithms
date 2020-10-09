@@ -47,6 +47,12 @@ public:
 
     bool CheckIfCycleExists_Floyd() const;
 
+    void ReverseList_SwapPointers();
+
+    void ReverseList_Iterative();
+
+    ListNode<T>* ReverseList_Recursively(ListNode<T>* head);
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -59,6 +65,8 @@ public:
 
         return ostream;
     }
+
+    ListNode<int> *GetHead();
 };
 
 template<class T>
@@ -180,6 +188,47 @@ bool List<T>::CheckIfCycleExists_Floyd() const {
     }
 
     return false;
+}
+
+template<class T>
+void List<T>::ReverseList_SwapPointers() {
+    swap(head, tail);
+}
+
+template<class T>
+void List<T>::ReverseList_Iterative() {
+    ListNode<T> *previous = nullptr, *current = head, *next;
+
+    while (current != nullptr) {
+        next = current->next;
+        current->next = previous;
+        previous = current;
+        current = next;
+    }
+
+    head = previous;
+}
+
+template<class T>
+ListNode<T>* List<T>::ReverseList_Recursively(ListNode<T>* head) {
+    if (head == nullptr)
+        return nullptr;
+    else if (head->next == nullptr)
+    {
+        this->head = head;
+        return head;
+    }
+
+    ListNode<T>* next = ReverseList_Recursively(head->next);
+    next->next = head;
+    head->next = nullptr;
+
+    return head;
+}
+
+template<class T>
+ListNode<int> *List<T>::GetHead() {
+    return head;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
