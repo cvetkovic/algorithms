@@ -57,6 +57,8 @@ public:
 
     ListNode<T>* GetNthElementFromEnd_TwoPtrs(int n);
 
+    int CalculateLoopLength();
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -280,6 +282,33 @@ ListNode<T> *List<T>::GetNthElementFromEnd_TwoPtrs(int n) {
     }
 
     return ptr1;
+}
+
+template<class T>
+int List<T>::CalculateLoopLength() {
+    ListNode<T> *slow = head, *fast = head;
+
+    while (slow != nullptr && fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast)
+            break;
+    }
+
+    if (slow != fast)
+        return 0;
+
+    int cnt = 0;
+
+    do
+    {
+        slow = slow->next;
+        cnt++;
+    } while (slow != fast);
+
+    return cnt;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP

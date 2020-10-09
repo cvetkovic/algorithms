@@ -8,31 +8,49 @@ using namespace std;
 int main() {
     List<int> list;
 
-    list.AddToHead(3);
-    list.AddToHead(2);
-    list.AddToHead(1);
-    list.AddToTail(4);
-    list.AddToTail(5);
-    list.AddToTail(6);
+    ListNode<int>* n1 = new ListNode<int>(1);
+    ListNode<int>* n2 = new ListNode<int>(2);
+    ListNode<int>* n3 = new ListNode<int>(3);
+    ListNode<int>* n4 = new ListNode<int>(4);
+    ListNode<int>* n5 = new ListNode<int>(5);
 
-    cout << "Printing whole list:" << endl;
-    cout << list << endl << endl;
+    n1->next = n2;
+    n2->next = n3;
+    n3->next = n4;
+    n4->next = n5;
+    n5->next = n2;
 
-    cout << "Element #3 from the end is: " << list.GetNthElementFromEnd_TwoPtrs(3)->item << endl;
+    list.SetHead(n1);
+
+    cout << "Existence of cycle in linked list: " << list.CheckIfCycleExists_Floyd() << endl;
+    cout << "Loop length: " << list.CalculateLoopLength() << endl;
 
     auto start = chrono::high_resolution_clock::now();
     for (int i = 0; i < 100000; i++)
-        list.GetNthElementFromEnd_Counter(3);
+        list.CheckIfCycleExists_WithSet();
     auto stop = chrono::high_resolution_clock::now();
 
     cout << "1: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
 
     start = chrono::high_resolution_clock::now();
     for (int i = 0; i < 100000; i++)
-        list.GetNthElementFromEnd_TwoPtrs(3);
+        list.CheckIfCycleExists_WithVisited();
     stop = chrono::high_resolution_clock::now();
 
     cout << "2: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
 
-    return 0;
+    start = chrono::high_resolution_clock::now();
+    for (int i = 0; i < 100000; i++)
+        list.CheckIfCycleExists_Floyd();
+    stop = chrono::high_resolution_clock::now();
+
+    cout << "3: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
+
+    delete n1;
+    delete n2;
+    delete n3;
+    delete n4;
+    delete n5;
+
+    exit(0);
 }

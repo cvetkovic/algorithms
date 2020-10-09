@@ -58,6 +58,7 @@ void LoopDetection() {
     list.SetHead(n1);
 
     cout << "Existence of cycle in linked list: " << list.CheckIfCycleExists_Floyd() << endl;
+    cout << "Loop length: " << list.CalculateLoopLength() << endl;
 
     auto start = chrono::high_resolution_clock::now();
     for (int i = 0; i < 100000; i++)
