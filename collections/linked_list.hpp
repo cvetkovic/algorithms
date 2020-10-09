@@ -53,6 +53,10 @@ public:
 
     ListNode<T>* ReverseList_Recursively(ListNode<T>* head);
 
+    ListNode<T>* GetNthElementFromEnd_Counter(int n);
+
+    ListNode<T>* GetNthElementFromEnd_TwoPtrs(int n);
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -229,6 +233,53 @@ ListNode<T>* List<T>::ReverseList_Recursively(ListNode<T>* head) {
 template<class T>
 ListNode<int> *List<T>::GetHead() {
     return head;
+}
+
+template<class T>
+ListNode<T> *List<T>::GetNthElementFromEnd_Counter(int n) {
+    ListNode<T>* current = head;
+    int cnt = 0;
+
+    while (current != nullptr)
+    {
+        cnt++;
+        current = current->next;
+    }
+
+    if (cnt < n)
+        throw runtime_error("List has less elements than provided argument.");
+
+    current = head;
+    cnt = cnt - n;
+    while (cnt > 0)
+    {
+        cnt--;
+        current = current->next;
+    }
+
+    return current;
+}
+
+template<class T>
+ListNode<T> *List<T>::GetNthElementFromEnd_TwoPtrs(int n) {
+    ListNode<T> *ptr1 = head, *ptr2 = head;
+    int cnt = 0;
+
+    while (cnt++ < n)
+    {
+        if (ptr2 == nullptr)
+            throw runtime_error("List has less elements than provided argument.");
+
+        ptr2 = ptr2->next;
+    }
+
+    while (ptr2 != nullptr)
+    {
+        ptr1 = ptr1->next;
+        ptr2 = ptr2->next;
+    }
+
+    return ptr1;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP

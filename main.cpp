@@ -18,21 +18,18 @@ int main() {
     cout << "Printing whole list:" << endl;
     cout << list << endl << endl;
 
-    list.ReverseList_Recursively(list.GetHead());
-
-    cout << "Printing whole reversed list:" << endl;
-    cout << list << endl << endl;
+    cout << "Element #3 from the end is: " << list.GetNthElementFromEnd_TwoPtrs(3)->item << endl;
 
     auto start = chrono::high_resolution_clock::now();
     for (int i = 0; i < 100000; i++)
-        list.ReverseList_Recursively(list.GetHead());
+        list.GetNthElementFromEnd_Counter(3);
     auto stop = chrono::high_resolution_clock::now();
 
     cout << "1: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
 
     start = chrono::high_resolution_clock::now();
     for (int i = 0; i < 100000; i++)
-        list.ReverseList_Iterative();
+        list.GetNthElementFromEnd_TwoPtrs(3);
     stop = chrono::high_resolution_clock::now();
 
     cout << "2: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
