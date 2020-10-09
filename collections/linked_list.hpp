@@ -6,6 +6,7 @@
 #define TESTGROUND_LINKED_LIST_HPP
 
 #include <iostream>
+#include <stack>
 #include <string>
 #include <unordered_set>
 
@@ -51,20 +52,24 @@ public:
 
     void ReverseList_Iterative();
 
-    ListNode<T>* ReverseList_Recursively(ListNode<T>* head);
+    ListNode<T> *ReverseList_Recursively(ListNode<T> *head);
 
-    ListNode<T>* GetNthElementFromEnd_Counter(int n);
+    ListNode<T> *GetNthElementFromEnd_Counter(int n);
 
-    ListNode<T>* GetNthElementFromEnd_TwoPtrs(int n);
+    ListNode<T> *GetNthElementFromEnd_TwoPtrs(int n);
 
-    int CalculateLoopLength();
+    int CalculateLoopLength() const;
+
+    bool IsPalindrome_Stack() const;
+
+    bool IsPalindrome_MiddleTraversal();
 
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
 
             while (current != nullptr) {
-                ostream << current->item;
+                ostream << current->item << " ";
                 current = current->next;
             }
         }
@@ -216,16 +221,15 @@ void List<T>::ReverseList_Iterative() {
 }
 
 template<class T>
-ListNode<T>* List<T>::ReverseList_Recursively(ListNode<T>* head) {
+ListNode<T> *List<T>::ReverseList_Recursively(ListNode<T> *head) {
     if (head == nullptr)
         return nullptr;
-    else if (head->next == nullptr)
-    {
+    else if (head->next == nullptr) {
         this->head = head;
         return head;
     }
 
-    ListNode<T>* next = ReverseList_Recursively(head->next);
+    ListNode<T> *next = ReverseList_Recursively(head->next);
     next->next = head;
     head->next = nullptr;
 
@@ -239,11 +243,10 @@ ListNode<int> *List<T>::GetHead() {
 
 template<class T>
 ListNode<T> *List<T>::GetNthElementFromEnd_Counter(int n) {
-    ListNode<T>* current = head;
+    ListNode<T> *current = head;
     int cnt = 0;
 
-    while (current != nullptr)
-    {
+    while (current != nullptr) {
         cnt++;
         current = current->next;
     }
@@ -253,8 +256,7 @@ ListNode<T> *List<T>::GetNthElementFromEnd_Counter(int n) {
 
     current = head;
     cnt = cnt - n;
-    while (cnt > 0)
-    {
+    while (cnt > 0) {
         cnt--;
         current = current->next;
     }
@@ -267,16 +269,14 @@ ListNode<T> *List<T>::GetNthElementFromEnd_TwoPtrs(int n) {
     ListNode<T> *ptr1 = head, *ptr2 = head;
     int cnt = 0;
 
-    while (cnt++ < n)
-    {
+    while (cnt++ < n) {
         if (ptr2 == nullptr)
             throw runtime_error("List has less elements than provided argument.");
 
         ptr2 = ptr2->next;
     }
 
-    while (ptr2 != nullptr)
-    {
+    while (ptr2 != nullptr) {
         ptr1 = ptr1->next;
         ptr2 = ptr2->next;
     }
@@ -285,11 +285,10 @@ ListNode<T> *List<T>::GetNthElementFromEnd_TwoPtrs(int n) {
 }
 
 template<class T>
-int List<T>::CalculateLoopLength() {
+int List<T>::CalculateLoopLength() const {
     ListNode<T> *slow = head, *fast = head;
 
-    while (slow != nullptr && fast != nullptr && fast->next != nullptr)
-    {
+    while (slow != nullptr && fast != nullptr && fast->next != nullptr) {
         slow = slow->next;
         fast = fast->next->next;
 
@@ -302,13 +301,95 @@ int List<T>::CalculateLoopLength() {
 
     int cnt = 0;
 
-    do
-    {
+    do {
         slow = slow->next;
         cnt++;
     } while (slow != fast);
 
     return cnt;
+}
+
+template<class T>
+bool List<T>::IsPalindrome_Stack() const {
+    stack<T> elementStack;
+    ListNode<T> *current = head;
+
+    while (current != nullptr) {
+        elementStack.push(current->item);
+        current = current->next;
+    }
+
+    current = head;
+    while (current != nullptr) {
+        if (elementStack.top() != current->item)
+            return false;
+
+        elementStack.pop();
+        current = current->next;
+    }
+
+    return true;
+}
+
+template<class T>
+bool List<T>::IsPalindrome_MiddleTraversal() {
+    // find mid element
+    ListNode<T> *slow = head, *fast = head, *slowPrev;
+    while (slow != nullptr && fast != nullptr && fast->next != nullptr) {
+        slowPrev = slow;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    // if number of elements is odd then don't compare middle element
+    ListNode<T> *middleOdd = nullptr;
+    if (fast && fast->next == nullptr) {
+        middleOdd = slow;
+        slow = slow->next;
+    }
+
+    // reverse right half of the linked list
+    ListNode<T> *prev = nullptr, *current = slow, *next;
+    while (current != nullptr) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    slowPrev->next = nullptr;
+
+    // compare two halves of list element by element
+    ListNode<T> *p1 = head, *p2 = prev;
+    while (p1 != nullptr && p2 != nullptr) {
+        if (p1->item != p2->item)
+            break;
+
+        p1 = p1->next;
+        p2 = p2->next;
+    }
+
+    // reconstruct the list
+    current = prev;
+    prev = nullptr;
+    while (current != nullptr) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    if (fast && fast->next == nullptr) {
+        middleOdd->next = prev;
+        //slow->next = list.GetHead();
+    } else {
+        slowPrev->next = prev;
+    }
+
+    if (p1 == nullptr && p2 == nullptr)
+        return true;
+    else
+        return false;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
