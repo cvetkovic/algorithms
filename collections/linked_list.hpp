@@ -70,6 +70,8 @@ public:
 
     void RemoveDuplicatedFromUnsorted_Set();
 
+    void EvenOddSegregation();
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -447,6 +449,47 @@ void List<T>::RemoveDuplicatedFromUnsorted_Set() {
             prev->next = next;
             current = next;
         }
+    }
+}
+
+template<class T>
+void List<T>::EvenOddSegregation() {
+    ListNode<T> *evenHead = nullptr, *evenTail = nullptr;
+    ListNode<T> *oddHead = nullptr, *oddTail = nullptr;
+    ListNode<T> *current = head;
+
+    while (current != nullptr) {
+        if (current->item % 2 == 0) {
+            if (evenHead == nullptr)
+                evenHead = evenTail = current;
+            else {
+                evenTail->next = current;
+                evenTail = current;
+            }
+        } else {
+            if (oddHead == nullptr)
+                oddHead = oddTail = current;
+            else {
+                oddTail->next = current;
+                oddTail = current;
+            }
+        }
+
+        current = current->next;
+    }
+
+    if (evenTail != nullptr)
+        evenTail->next = nullptr;
+    if (oddTail != nullptr)
+        oddTail->next == nullptr;
+
+    if (evenHead == nullptr)
+        head = oddHead;
+    else if (oddHead == nullptr)
+        head = evenHead;
+    else {
+        evenTail->next = oddHead;
+        head = evenHead;
     }
 }
 

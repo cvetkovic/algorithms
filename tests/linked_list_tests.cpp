@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include <iostream>
+
 using namespace std;
 
 void MiddleElementPerformanceTest() {
@@ -43,11 +44,11 @@ void MiddleElementPerformanceTest() {
 void LoopDetection() {
     List<int> list;
 
-    ListNode<int>* n1 = new ListNode<int>(1);
-    ListNode<int>* n2 = new ListNode<int>(2);
-    ListNode<int>* n3 = new ListNode<int>(3);
-    ListNode<int>* n4 = new ListNode<int>(4);
-    ListNode<int>* n5 = new ListNode<int>(5);
+    ListNode<int> *n1 = new ListNode<int>(1);
+    ListNode<int> *n2 = new ListNode<int>(2);
+    ListNode<int> *n3 = new ListNode<int>(3);
+    ListNode<int> *n4 = new ListNode<int>(4);
+    ListNode<int> *n5 = new ListNode<int>(5);
 
     n1->next = n2;
     n2->next = n3;
@@ -190,4 +191,28 @@ void RemoveDuplicatesFromUnoortedUsingSet() {
     list.RemoveDuplicatedFromUnsorted_Set();
 
     cout << "Printing whole duplicates removal (list was already sorted): " << list << endl << endl;
+}
+
+void EvenOddSegregation() {
+    List<int> list;
+
+    list.AddToTail(3);
+    list.AddToTail(4);
+    list.AddToTail(5);
+    list.AddToTail(2);
+    list.AddToTail(4);
+    list.AddToTail(5);
+    list.AddToTail(4);
+    list.AddToTail(9);
+    list.AddToTail(9);
+
+    cout << "Printing whole list:" <<
+         endl;
+    cout << list << endl <<
+         endl;
+
+    list.EvenOddSegregation();
+
+    cout << "Even-odd segregated list: " << list << endl <<
+         endl;
 }

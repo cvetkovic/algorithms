@@ -21,9 +21,9 @@ int main() {
     cout << "Printing whole list:" << endl;
     cout << list << endl << endl;
 
-    list.RemoveDuplicatedFromUnsorted_Set();
+    list.EvenOddSegregation();
 
-    cout << "Printing whole duplicates removal (list was already sorted): " << list << endl << endl;
+    cout << "Even-odd segregated list: " << list << endl << endl;
 
     return 0;
 }
