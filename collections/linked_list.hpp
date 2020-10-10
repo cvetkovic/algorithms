@@ -72,6 +72,8 @@ public:
 
     void EvenOddSegregation();
 
+    static ListNode<T> *TwoListsIntersection(const List<T> &list1, const List<T> &list2);
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -491,6 +493,40 @@ void List<T>::EvenOddSegregation() {
         evenTail->next = oddHead;
         head = evenHead;
     }
+}
+
+template<class T>
+ListNode<T> *List<T>::TwoListsIntersection(const List<T> &list1, const List<T> &list2) {
+    int cnt1, cnt2;
+    ListNode<T> *current1 = list1.head, *current2 = list2.head;
+
+    while (current1 != nullptr) {
+        cnt1++;
+        current1 = current1->next;
+    }
+    while (current2 != nullptr) {
+        cnt2++;
+        current2 = current2->next;
+    }
+
+    current1 = list1.head;
+    current2 = list2.head;
+    if (cnt1 > cnt2)
+        for (int i = 1; i <= abs(cnt2 - cnt1); i++)
+            current1 = current1->next;
+    else
+        for (int i = 1; i <= abs(cnt2 - cnt1); i++)
+            current2 = current2->next;
+
+    while (current1 != nullptr && current2 != nullptr) {
+        if (current1 == current2)
+            return current1;
+
+        current1 = current1->next;
+        current2 = current2->next;
+    }
+
+    return nullptr;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
