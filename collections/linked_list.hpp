@@ -64,6 +64,12 @@ public:
 
     bool IsPalindrome_MiddleTraversal();
 
+    void RemoveDuplicatesFromSorted();
+
+    void RemoveDuplicatedFromUnsorted_On2();
+
+    void RemoveDuplicatedFromUnsorted_Set();
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -390,6 +396,58 @@ bool List<T>::IsPalindrome_MiddleTraversal() {
         return true;
     else
         return false;
+}
+
+template<class T>
+void List<T>::RemoveDuplicatesFromSorted() {
+    ListNode<T> *current = head;
+
+    while (current != nullptr && current->next != nullptr) {
+        if (current->item == current->next->item) {
+            ListNode<T> *next = current->next->next;
+            delete current->next;
+            current->next = next;
+        } else
+            current = current->next;
+    }
+}
+
+template<class T>
+void List<T>::RemoveDuplicatedFromUnsorted_On2() {
+    for (ListNode<T> *p1 = head; p1 != nullptr && p1->next != nullptr; p1 = p1->next) {
+        ListNode<T> *prev = p1;
+
+        for (ListNode<T> *p2 = p1->next; p2 != nullptr;) {
+            if (p1->item == p2->item) {
+                ListNode<T> *next = p2->next;
+                delete p2;
+                prev->next = next;
+                p2 = next;
+            } else {
+                prev = p2;
+                p2 = p2->next;
+            }
+        }
+    }
+}
+
+template<class T>
+void List<T>::RemoveDuplicatedFromUnsorted_Set() {
+    ListNode<T> *prev = nullptr, *current = head;
+    unordered_set<int> elements;
+
+    while (current != nullptr) {
+        if (elements.find(current->item) == elements.end()) {
+            elements.insert(current->item);
+            prev = current;
+            current = current->next;
+        } else {
+            ListNode<T> *next = current->next;
+            delete current;
+            prev->next = next;
+            current = next;
+        }
+    }
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP

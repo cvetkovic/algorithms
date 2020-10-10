@@ -152,3 +152,42 @@ void NthElementFromTheEnd() {
 
     cout << "2: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << endl;
 }
+
+void RemoveDuplicatesFromSortedLinkedList() {
+    List<int> list;
+
+    list.AddToHead(3);
+    list.AddToHead(2);
+    list.AddToHead(1);
+    list.AddToTail(3);
+    list.AddToTail(3);
+    list.AddToTail(4);
+
+    cout << "Printing whole list:" << endl;
+    cout << list << endl << endl;
+
+    list.RemoveDuplicatesFromSorted();
+
+    cout << "Printing whole duplicates removal (list was already sorted): " << list << endl << endl;
+}
+
+void RemoveDuplicatesFromUnoortedUsingSet() {
+    List<int> list;
+
+    list.AddToTail(3);
+    list.AddToTail(4);
+    list.AddToTail(5);
+    list.AddToTail(2);
+    list.AddToTail(4);
+    list.AddToTail(5);
+    list.AddToTail(4);
+    list.AddToTail(9);
+    list.AddToTail(9);
+
+    cout << "Printing whole list:" << endl;
+    cout << list << endl << endl;
+
+    list.RemoveDuplicatedFromUnsorted_Set();
+
+    cout << "Printing whole duplicates removal (list was already sorted): " << list << endl << endl;
+}
