@@ -6,34 +6,24 @@
 using namespace std;
 
 int main() {
-    List<int> list;
+    List<int> list1, list2;
 
-    ListNode<int>* t1 = new ListNode<int>(3);
-    ListNode<int>* t2 = new ListNode<int>(6);
-    ListNode<int>* t3 = new ListNode<int>(9);
-    ListNode<int>* t4 = new ListNode<int>(15);
-    ListNode<int>* t5 = new ListNode<int>(30);
-    ListNode<int>* t6 = new ListNode<int>(10);
+    list1.AddToTail(5);
+    list1.AddToTail(10);
+    list1.AddToTail(15);
+    list1.AddToTail(40);
 
-    List<int> l1, l2;
-    l1.SetHead(t1);
-    l2.SetHead(t6);
+    list2.AddToTail(2);
+    list2.AddToTail(3);
+    list2.AddToTail(20);
 
-    t1->next = t2;
-    t2->next = t3;
-    t3->next = t4;
-    t4->next = t5;
-    t5->next = nullptr;
-    t6->next = t4;
+    List<int>* reverseMerged = List<int>::MergeTwoListsInReverseOrder(list1, list2);
 
-    cout << "Intersection at node with value: " << List<int>::TwoListsIntersection(l1, l2)->item << endl;
+    cout << "List 1: " << list1 << endl;
+    cout << "List 2: " << list2 << endl << endl;
+    cout << "Merged: " << *reverseMerged << endl;
 
-    delete t1;
-    delete t2;
-    delete t3;
-    delete t4;
-    delete t5;
-    delete t6;
+    delete reverseMerged;
 
     exit(0);
 }

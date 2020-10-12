@@ -74,6 +74,8 @@ public:
 
     static ListNode<T> *TwoListsIntersection(const List<T> &list1, const List<T> &list2);
 
+    static List<T> *MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2);
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -527,6 +529,61 @@ ListNode<T> *List<T>::TwoListsIntersection(const List<T> &list1, const List<T> &
     }
 
     return nullptr;
+}
+
+template<class T>
+List<T> *List<T>::MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2) {
+    List<T> *mergedList = new List<T>();
+
+    ListNode<T> *p1 = list1.head;
+    ListNode<T> *p2 = list2.head;
+    ListNode<T> *current = nullptr;
+
+    while (p1 != nullptr && p2 != nullptr) {
+        ListNode<T>* next;
+
+        if (p1->item < p2->item) {
+            next = p1->next;
+            p1->next = current;
+            current = p1;
+            p1 = next;
+        }
+        else if (p1->item > p2->item) {
+            next = p2->next;
+            p2->next = current;
+            current = p2;
+            p2 = next;
+        }
+        else {
+            next = p1->next;
+            p1->next = p2;
+            p1 = next;
+
+            next = p2->next;
+            p2->next = current;
+            current = p2;
+
+            p2 = next;
+        }
+    }
+
+    while (p1 != nullptr) {
+        ListNode<T>* next = p1->next;
+        p1->next = current;
+        current = p1;
+        p1 = next;
+    }
+
+    while (p2 != nullptr) {
+        ListNode<T>* next = p2->next;
+        p2->next = current;
+        current = p2;
+        p2 = next;
+    }
+
+    mergedList->head = current;
+
+    return mergedList;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
