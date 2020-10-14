@@ -82,6 +82,8 @@ public:
 
     static List<T> *MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2);
 
+    void DeleteNodesWithGreaterValueOnRight();
+
     friend bool operator==(const List &list1, const List &list2) {
         ListNode<T> *p1 = list1.head, *p2 = list2.head;
 
@@ -657,6 +659,35 @@ void List<T>::ReverseGroups(int k) {
         } else
             head = prev;
         first = false;
+    }
+}
+
+template<class T>
+void List<T>::DeleteNodesWithGreaterValueOnRight() {
+    ListNode<T>* current = head;
+    ListNode<T>* prev = nullptr;
+
+    while (current != nullptr && current->next != nullptr) {
+        if (current->item < current->next->item) {
+            if (prev == nullptr) {
+                head = current->next;
+
+                ListNode<T>* next = current->next;
+                delete current;
+                current = next;
+            }
+            else {
+                prev->next = current->next;
+
+                ListNode<T>* next = current->next;
+                delete current;
+                current = next;
+            }
+        }
+        else {
+            prev = current;
+            current = current->next;
+        }
     }
 }
 
