@@ -82,6 +82,8 @@ public:
 
     static List<T> *MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2);
 
+    static List<T> *AddTwoNumbers(const List<T> &num1, const List<T> &num2);
+
     void DeleteNodesWithGreaterValueOnRight();
 
     friend bool operator==(const List &list1, const List &list2) {
@@ -664,31 +666,68 @@ void List<T>::ReverseGroups(int k) {
 
 template<class T>
 void List<T>::DeleteNodesWithGreaterValueOnRight() {
-    ListNode<T>* current = head;
-    ListNode<T>* prev = nullptr;
+    ListNode<T> *current = head;
+    ListNode<T> *prev = nullptr;
 
     while (current != nullptr && current->next != nullptr) {
         if (current->item < current->next->item) {
             if (prev == nullptr) {
                 head = current->next;
 
-                ListNode<T>* next = current->next;
+                ListNode<T> *next = current->next;
                 delete current;
                 current = next;
-            }
-            else {
+            } else {
                 prev->next = current->next;
 
-                ListNode<T>* next = current->next;
+                ListNode<T> *next = current->next;
                 delete current;
                 current = next;
             }
-        }
-        else {
+        } else {
             prev = current;
             current = current->next;
         }
     }
+}
+
+template<class T>
+List<T> *List<T>::AddTwoNumbers(const List<T> &num1, const List<T> &num2) {
+    ListNode<T> *p1 = num1.head;
+    ListNode<T> *p2 = num2.head;
+
+    List<T> *result = new List<T>();
+    bool carry = false;
+
+    while (p1 != nullptr && p2 != nullptr) {
+        int sum = p1->item + p2->item + (carry ? 1 : 0);
+        carry = (sum >= 10);
+
+        result->AddToTail(sum % 10);
+
+        p1 = p1->next;
+        p2 = p2->next;
+    }
+
+    while (p1 != nullptr) {
+        int sum = p1->item + (carry ? 1 : 0);
+        carry = (sum >= 10);
+
+        result->AddToTail(sum % 10);
+
+        p1 = p1->next;
+    }
+
+    while (p2 != nullptr) {
+        int sum = p2->item + (carry ? 1 : 0);
+        carry = (sum >= 10);
+
+        result->AddToTail(sum % 10);
+
+        p2 = p2->next;
+    }
+
+    return result;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
