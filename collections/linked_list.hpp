@@ -72,6 +72,8 @@ public:
 
     void EvenOddSegregation();
 
+    void ReverseGroups(int k);
+
     static ListNode<T> *TwoListsIntersection(const List<T> &list1, const List<T> &list2);
 
     static List<T> *MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2);
@@ -584,6 +586,38 @@ List<T> *List<T>::MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2) {
     mergedList->head = current;
 
     return mergedList;
+}
+
+template<class T>
+void List<T>::ReverseGroups(int k) {
+    ListNode<T>* prev = nullptr, *curr = head, *next = nullptr;
+    int cnt = 0;
+
+    ListNode<T>* oldHead = head;
+    bool first = true;
+    while (curr != nullptr)
+    {
+        ListNode<T>* rem = next;
+        prev = nullptr, next = nullptr;
+
+        while (curr != nullptr && cnt < k) {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+
+            cnt++;
+        }
+
+        cnt = 0;
+        if (!first) {
+            oldHead->next = prev;
+            oldHead = rem;
+        }
+        else
+            head = prev;
+        first = false;
+    }
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
