@@ -29,6 +29,10 @@ private:
     ListNode<T> *tail = 0;
 
 public:
+    List() {}
+
+    List(const List &list);
+
     ~List();
 
     void AddToHead(T item);
@@ -78,6 +82,23 @@ public:
 
     static List<T> *MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2);
 
+    friend bool operator==(const List &list1, const List &list2) {
+        ListNode<T> *p1 = list1.head, *p2 = list2.head;
+
+        while (p1 != nullptr && p2 != nullptr) {
+            if (p1->item != p2->item)
+                return false;
+
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+
+        if (p1 != nullptr || p2 != nullptr)
+            return false;
+        else
+            return true;
+    }
+
     friend ostream &operator<<(ostream &ostream, const List<T> &list) {
         if (list.head != nullptr) {
             ListNode<T> *current = list.head;
@@ -93,6 +114,29 @@ public:
 
     ListNode<int> *GetHead();
 };
+
+template<class T>
+List<T>::List(const List &list) {
+    ListNode<T> *curr = list.head;
+
+    ListNode<T> *newHead = nullptr;
+    ListNode<T> *newTail = nullptr;
+
+    while (curr != nullptr) {
+        ListNode<T> *elem = new ListNode<T>(curr->item);
+
+        if (newHead == nullptr)
+            newHead = newTail = elem;
+        else {
+            newTail->next = elem;
+            newTail = elem;
+        }
+
+        curr = curr->next;
+    }
+
+    head = newHead;
+}
 
 template<class T>
 List<T>::~List() {
@@ -542,21 +586,19 @@ List<T> *List<T>::MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2) {
     ListNode<T> *current = nullptr;
 
     while (p1 != nullptr && p2 != nullptr) {
-        ListNode<T>* next;
+        ListNode<T> *next;
 
         if (p1->item < p2->item) {
             next = p1->next;
             p1->next = current;
             current = p1;
             p1 = next;
-        }
-        else if (p1->item > p2->item) {
+        } else if (p1->item > p2->item) {
             next = p2->next;
             p2->next = current;
             current = p2;
             p2 = next;
-        }
-        else {
+        } else {
             next = p1->next;
             p1->next = p2;
             p1 = next;
@@ -570,14 +612,14 @@ List<T> *List<T>::MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2) {
     }
 
     while (p1 != nullptr) {
-        ListNode<T>* next = p1->next;
+        ListNode<T> *next = p1->next;
         p1->next = current;
         current = p1;
         p1 = next;
     }
 
     while (p2 != nullptr) {
-        ListNode<T>* next = p2->next;
+        ListNode<T> *next = p2->next;
         p2->next = current;
         current = p2;
         p2 = next;
@@ -590,14 +632,13 @@ List<T> *List<T>::MergeTwoListsInReverseOrder(List<T> &list1, List<T> &list2) {
 
 template<class T>
 void List<T>::ReverseGroups(int k) {
-    ListNode<T>* prev = nullptr, *curr = head, *next = nullptr;
+    ListNode<T> *prev = nullptr, *curr = head, *next = nullptr;
     int cnt = 0;
 
-    ListNode<T>* oldHead = head;
+    ListNode<T> *oldHead = head;
     bool first = true;
-    while (curr != nullptr)
-    {
-        ListNode<T>* rem = next;
+    while (curr != nullptr) {
+        ListNode<T> *rem = next;
         prev = nullptr, next = nullptr;
 
         while (curr != nullptr && cnt < k) {
@@ -613,8 +654,7 @@ void List<T>::ReverseGroups(int k) {
         if (!first) {
             oldHead->next = prev;
             oldHead = rem;
-        }
-        else
+        } else
             head = prev;
         first = false;
     }

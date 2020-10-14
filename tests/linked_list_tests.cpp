@@ -274,7 +274,7 @@ void MergeListsInReverseOrder() {
     exit(0);
 }
 
-int main() {
+void ReverseGroups() {
     List<int> list;
 
     list.AddToTail(1);
@@ -291,4 +291,22 @@ int main() {
 
     cout << "Printing whole reversed list:" << endl;
     cout << list << endl << endl;
+}
+
+void ListsEqualityAndCloning() {
+    List<int> list;
+
+    list.AddToTail(1);
+    list.AddToTail(2);
+    list.AddToTail(3);
+    list.AddToTail(4);
+    list.AddToTail(5);
+    list.AddToTail(6);
+
+    List<int> list2(list);
+
+    cout << "Printing whole list:" << endl;
+    cout << list << endl << endl;
+
+    cout << "Lists equal: " << (list == list2) << endl;
 }

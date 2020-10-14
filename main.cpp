@@ -15,11 +15,10 @@ int main() {
     list.AddToTail(5);
     list.AddToTail(6);
 
+    List<int> list2(list);
+
     cout << "Printing whole list:" << endl;
     cout << list << endl << endl;
 
-    list.ReverseGroups(3);
-
-    cout << "Printing whole reversed list:" << endl;
-    cout << list << endl << endl;
+    cout << "Lists equal: " << (list == list2) << endl;
 }
