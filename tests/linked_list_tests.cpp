@@ -265,7 +265,7 @@ void MergeListsInReverseOrder() {
     cout << "List 1: " << list1 << endl;
     cout << "List 2: " << list2 << endl << endl;
 
-    List<int>* reverseMerged = List<int>::MergeTwoListsInReverseOrder(list1, list2);
+    List<int> *reverseMerged = List<int>::MergeTwoListsInReverseOrder(list1, list2);
 
     cout << "Merged: " << *reverseMerged << endl;
 
@@ -360,10 +360,30 @@ void AddNumbersAsLinkedLists() {
     cout << list1 << endl;
     cout << list2 << endl << endl;
 
-    List<int>* sum = List<int>::AddTwoNumbers(list1,list2);
+    List<int> *sum = List<int>::AddTwoNumbers(list1, list2);
 
     cout << "Printing list after summation:" << endl;
     cout << *sum << endl;
 
     delete sum;
+}
+
+void Sort012s() {
+    List<int> list;
+
+    list.AddToTail(1);
+    list.AddToTail(1);
+    list.AddToTail(2);
+    list.AddToTail(0);
+    list.AddToTail(2);
+    list.AddToTail(0);
+    list.AddToTail(1);
+
+    cout << "Printing list:" << endl;
+    cout << list << endl << endl;
+
+    list.Sort012s();
+
+    cout << "Printing sorted list:" << endl;
+    cout << list << endl << endl;
 }

@@ -86,6 +86,8 @@ public:
 
     void DeleteNodesWithGreaterValueOnRight();
 
+    void Sort012s();
+
     friend bool operator==(const List &list1, const List &list2) {
         ListNode<T> *p1 = list1.head, *p2 = list2.head;
 
@@ -728,6 +730,63 @@ List<T> *List<T>::AddTwoNumbers(const List<T> &num1, const List<T> &num2) {
     }
 
     return result;
+}
+
+template<class T>
+void List<T>::Sort012s() {
+    ListNode<T> *current = head;
+
+    ListNode<T> *zeros = nullptr, *zerosTail = nullptr;
+    ListNode<T> *ones = nullptr, *onesTail = nullptr;
+    ListNode<T> *twos = nullptr, *twosTail = nullptr;
+
+    while (current != nullptr) {
+        T item = current->item;
+
+        ListNode<T> *next = current->next;
+
+        if (item % 3 == 0) {
+            if (zeros == nullptr) {
+                zeros = zerosTail = current;
+            } else {
+                zerosTail->next = current;
+                zerosTail = current;
+            }
+        } else if (item % 3 == 1) {
+            if (ones == nullptr) {
+                ones = onesTail = current;
+            } else {
+                onesTail->next = current;
+                onesTail = current;
+            }
+        } else {
+            if (twos == nullptr) {
+                twos = twosTail = current;
+            } else {
+                twosTail->next = current;
+                twosTail = current;
+            }
+        }
+
+        current->next = nullptr;
+        current = next;
+    }
+
+    if (zeros != nullptr) {
+        head = zeros;
+        if (ones == nullptr) {
+            zerosTail->next = twos;
+        } else {
+            zerosTail->next = ones;
+            onesTail->next = twos;
+        }
+    } else if (ones != nullptr) {
+        head = ones;
+        if (twos != nullptr)
+            onesTail->next = twos;
+    }
+    else
+        head = twos;
 }
 
 #endif //TESTGROUND_LINKED_LIST_HPP
