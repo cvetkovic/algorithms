@@ -10,15 +10,16 @@
 
 using namespace std;
 
-int gcd(int a, int b) {
-    if (b == 0)
-        return a;
-    else
-        return gcd(b, a % b);
-}
-
 template<class T>
 class Array {
+
+private:
+    static int gcd(int a, int b) {
+        if (b == 0)
+            return a;
+        else
+            return gcd(b, a % b);
+    }
 
 public:
     static void RotateLeft(T *array, const int n, const int p);
@@ -26,6 +27,8 @@ public:
     static void RotateLeftInSets(T *array, const int n, const int p);
 
     static void Print(T *array, int n);
+
+    static int BinarySearch(T *array, int n, int element);
 };
 
 template<class T>
@@ -42,7 +45,7 @@ void Array<T>::RotateLeft(T *array, const int n, const int p) {
 
 template<class T>
 void Array<T>::RotateLeftInSets(T *array, const int n, const int p) {
-    int numberOfSets = gcd(n, p);
+    int numberOfSets = Array<int>::gcd(n, p);
 
     for (int set = 0; set < numberOfSets; set++) {
         int tmp = array[set];
@@ -71,6 +74,25 @@ void Array<T>::Print(T *array, int n) {
         cout << array[i] << " ";
 
     cout << endl;
+}
+
+template<class T>
+int Array<T>::BinarySearch(T *array, int n, int element) {
+    int low = 0;
+    int high = n - 1;
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+
+        if (array[mid] < element)
+            low = mid + 1;
+        else if (array[mid] > element)
+            high = mid - 1;
+        else
+            return mid;
+    }
+
+    return -1;
 }
 
 #endif //TESTGROUND_ARRAY_HPP
