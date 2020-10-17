@@ -1,26 +1,17 @@
 #include <chrono>
 #include <iostream>
 
+#include "collections/array.hpp"
 #include "collections/linked_list.hpp"
 
 using namespace std;
 
 int main() {
-    List<int> list;
+    const int n = 9;
 
-    list.AddToTail(1);
-    list.AddToTail(1);
-    list.AddToTail(2);
-    list.AddToTail(0);
-    list.AddToTail(2);
-    list.AddToTail(0);
-    list.AddToTail(1);
+    int *array = new int[n]{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    cout << "Printing list:" << endl;
-    cout << list << endl << endl;
-
-    list.Sort012s();
-
-    cout << "Printing sorted list:" << endl;
-    cout << list << endl << endl;
+    Array<int>::Print(array, n);
+    Array<int>::RotateLeftInSets(array, n, 2);
+    Array<int>::Print(array, n);
 }

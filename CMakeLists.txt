@@ -6,4 +6,4 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 file(GLOB SOURCES main.cpp collections/*.hpp)
 
-add_executable(testground ${SOURCES} tests/linked_list_tests.cpp)
+add_executable(testground ${SOURCES} tests/linked_list_tests.cpp collections/array.hpp tests/array_tests.cpp)
